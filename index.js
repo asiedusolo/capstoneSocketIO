@@ -1,6 +1,4 @@
 const { instrument } = require("@socket.io/admin-ui");
-const app = require("express")();
-var http = require("http").createServer(app);
 
 const PORT = process.env.PORT || 8900;
 
@@ -10,10 +8,6 @@ const io = require("socket.io")(PORT, {
   },
 });
 let allConnectedChatRooms = [];
-
-app.get("/", (req, res) => {
-  res.send("Socket connected");
-});
 
 const addUserChatRooms = (userId, socketId, chatRooms) => {
   !allConnectedChatRooms.some(
@@ -79,8 +73,4 @@ io.on("connection", (socket) => {
 
 instrument(io, {
   auth: false,
-});
-
-http.listen(PORT, () => {
-  console.log("Socket connected successfully");
 });
