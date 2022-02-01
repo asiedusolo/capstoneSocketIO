@@ -2,12 +2,13 @@ const { instrument } = require("@socket.io/admin-ui");
 const app = require("express")();
 var http = require("http").createServer(app);
 
-const io = require("socket.io")(process.env.PORT || 8900, {
+const PORT = process.env.PORT || 8900;
+
+const io = require("socket.io")(PORT, {
   cors: {
     orgin: ["http://localhost:3000", "https://admin.socket.io/#/"],
   },
 });
-
 let allConnectedChatRooms = [];
 
 app.get("/", (req, res) => {
@@ -78,4 +79,8 @@ io.on("connection", (socket) => {
 
 instrument(io, {
   auth: false,
+});
+
+http.listen(PORT, () => {
+  console.log("Socket connected successfully");
 });
