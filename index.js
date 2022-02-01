@@ -1,16 +1,18 @@
 const { instrument } = require("@socket.io/admin-ui");
+const app = require("express")();
+var http = require("http").createServer(app);
 
 const io = require("socket.io")(process.env.PORT || 8900, {
   cors: {
-    orgin: ["http://localhost:3000", "https://admin.socket.io/#/"]
-  }
+    orgin: ["http://localhost:3000", "https://admin.socket.io/#/"],
+  },
 });
 
-require("dotenv").config();
-const bcrypt = require("bcrypt");
-const saltRounds = 10;
-
 let allConnectedChatRooms = [];
+
+app.get("/", (req, res) => {
+  res.send("Socket connected");
+});
 
 const addUserChatRooms = (userId, socketId, chatRooms) => {
   !allConnectedChatRooms.some(
@@ -19,7 +21,7 @@ const addUserChatRooms = (userId, socketId, chatRooms) => {
     allConnectedChatRooms.push({
       userId: userId,
       socketId: socketId,
-      chatRooms: chatRooms
+      chatRooms: chatRooms,
     });
 };
 
@@ -64,7 +66,7 @@ io.on("connection", (socket) => {
         senderUsername,
         chatRoomId,
         chatRoomName,
-        text
+        text,
       });
     }
   );
@@ -74,14 +76,6 @@ io.on("connection", (socket) => {
   });
 });
 
-bcrypt.genSalt(saltRounds, (err, salt) => {
-  bcrypt.hash(process.env.PASSWORD, salt, (err, hash) => {
-    instrument(io, {
-      auth: {
-        type: "basic",
-        username: "admin",
-        password: hash
-      }
-    });
-  });
+instrument(io, {
+  auth: false,
 });
