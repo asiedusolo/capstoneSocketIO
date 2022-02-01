@@ -1,6 +1,6 @@
 const { instrument } = require("@socket.io/admin-ui");
 
-const io = require("socket.io")(8900, {
+const io = require("socket.io")(process.env.PORT || 8900, {
   cors: {
     orgin: ["http://localhost:3000", "https://admin.socket.io/#/"]
   }
