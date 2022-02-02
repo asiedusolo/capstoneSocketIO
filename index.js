@@ -14,6 +14,7 @@ app.use((req, res, next) => {
     "Acesss-Control-Allow-Headers",
     "Origin, X-Requested-With, Content-Type, Accept"
   );
+  next();
 });
 const PORT = process.env.PORT || 8900;
 const server = app.listen(PORT);
