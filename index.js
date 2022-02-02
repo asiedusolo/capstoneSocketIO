@@ -1,8 +1,20 @@
 const { instrument } = require("@socket.io/admin-ui");
 const express = require("express");
 const app = express();
-const cors = require("cors");
-app.use(cors());
+// const cors = require("cors");
+// app.use(cors());
+
+app.use((req, res, next) => {
+  res.header(
+    "Access-Control-Allow-Origin",
+    "https://letxchat.netlify.app",
+    "https://admin.socket.io/#/"
+  );
+  res.header(
+    "Acesss-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept"
+  );
+});
 const PORT = process.env.PORT || 8900;
 const server = app.listen(PORT);
 const socket = require("socket.io");
