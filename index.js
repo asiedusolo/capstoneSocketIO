@@ -4,8 +4,12 @@ const app = express();
 
 const PORT = process.env.PORT || 8900;
 const server = app.listen(PORT);
-const socket = require("socket.io");
-const io = socket(server);
+const io = require("socket.io")(server, {
+  cors: {
+    origin: ["https://letxchat.netlify.app", "https://admin.socket.io/#/"],
+  },
+});
+// const io = socket(server);
 
 let allConnectedChatRooms = [];
 
