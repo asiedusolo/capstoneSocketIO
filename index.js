@@ -1,12 +1,17 @@
 const { instrument } = require("@socket.io/admin-ui");
-
+const express = require("express");
+const app = express();
+const cors = require("cors");
+app.use(cors());
 const PORT = process.env.PORT || 8900;
-
-const io = require("socket.io")(PORT, {
+const server = app.listen(PORT);
+const socket = require("socket.io");
+const io = socket(server);
+/* (PORT, {
   cors: {
     orgin: ["http://localhost:3000", "https://admin.socket.io/#/"],
   },
-});
+}); */
 let allConnectedChatRooms = [];
 
 const addUserChatRooms = (userId, socketId, chatRooms) => {
